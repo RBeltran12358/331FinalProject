@@ -1,7 +1,7 @@
 ---
 title: "Getting to Know the Data Set"
 author: "Ricardo Beltran"
-date: 2021-06-10T21:13:14-05:10
+date: 2021-06-08T21:13:14-05:10
 categories: ["R"]
 tags: ["R Markdown", "plot", "regression"]
 ---
