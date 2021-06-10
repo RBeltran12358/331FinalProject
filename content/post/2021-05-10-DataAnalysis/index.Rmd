@@ -51,6 +51,7 @@ game_data <- game_data %>%
     START_POSITION = as.factor(START_POSITION)
   )
     
+game_data[is.na(game_data)] <- 0
 
 
 ```
@@ -87,43 +88,107 @@ In the game of basketball, while it's not always the case, the best players usua
 
 ```{r}
 
+starter_grouped <- game_data %>%
+  group_by(START_POSITION) %>%
+  summarise(avg_points = mean(PTS), 
+            avg_rebounds = mean(REB), 
+            avg_assists = mean(AST))
+
+ggplot(starter_grouped, aes(x=START_POSITION, y=avg_points )) + 
+  geom_bar(stat = "identity") +
+  xlab("Starter Status") + 
+  ylab("Average Points") + 
+  ggtitle("Average Points for Different Starter Positions") + 
+  theme_bw() +
+  geom_col(fill = "darkorchid") 
 ```
 
-grouped_Seeds <- cereals %>%
-  group_by(Seed_Type) %>%
-  summarise(meanRating = mean(rating))
-
-ggplot(grouped_Seeds, aes(x=Seed_Type, y=meanRating)) + 
+```{r}
+ggplot(starter_grouped, aes(x=START_POSITION, y=avg_rebounds )) + 
   geom_bar(stat = "identity") +
-  xlab("Seed Type") + 
-  ylab("Average Rating") + 
-  ggtitle("Mean Rating for Different Seed Types")
-# Including Plots
+  xlab("Starter Status") + 
+  ylab("Average Rebounds") + 
+  ggtitle("Average Rebounds for Different Starter Positions") + 
+  theme_bw() +
+  geom_col(fill = "darkorchid")
+```
+
+```{r}
+ggplot(starter_grouped, aes(x=START_POSITION, y=avg_assists )) + 
+  geom_bar(stat = "identity") +
+  xlab("Starter Status") + 
+  ylab("Average Assists") + 
+  ggtitle("Average Assists for Different Starter Positions") + 
+  theme_bw() +
+  geom_col(fill = "darkorchid")
+
+```
+From these graphs, it's clear that Non-Starters did not produce the same volume of points, assists, or rebounds, which are the main metrics in basketball. It also makes sense with today's game why Guards would be making more points than centers, and centers more rebounds than any other group. 
+
+However, perhaps starters play for longer and can accumulate more of these, so a better metric would be their percentage performances for other metrics, such as normal fieldgoals, field goals, and three pointers. 
+
+# Performance Percentages
+```{r}
+
+starter_grouped <- game_data %>%
+  group_by(START_POSITION) %>%
+  summarise(avg_fg_pct = mean(FG_PCT), 
+            avg_fg3_pct = mean(FG3_PCT), 
+            avg_ft_pct = mean(FT_PCT))
+
+ggplot(starter_grouped, aes(x=START_POSITION, y=avg_fg_pct)) + 
+  geom_bar(stat = "identity") +
+  xlab("Starter Status") + 
+  ylab("Average Field Goal Percentage") + 
+  ggtitle("Mean Field Goal Percentage for Different Starter Positions") + 
+  theme_bw() +
+  geom_col(fill = "darkorchid") 
+
+ggplot(starter_grouped, aes(x=START_POSITION, y=avg_fg3_pct  )) + 
+  geom_bar(stat = "identity") +
+  xlab("Starter Status") + 
+  ylab("Mean 3-Pointer Percentage") + 
+  ggtitle("Mean 3-Pointer Percentage for Different Starter Positions") + 
+  theme_bw() +
+  geom_col(fill = "darkorchid")
+
+ggplot(starter_grouped, aes(x=START_POSITION, y=avg_ft_pct )) + 
+  geom_bar(stat = "identity") +
+  xlab("Starter Status") + 
+  ylab("Mean Free Throw Percentage") + 
+  ggtitle("Mean Free Throw Percentage for Different Starter Positions") + 
+  theme_bw() +
+  geom_col(fill = "darkorchid")
+
+```
+Here we find that while, overall, the Starters still outperformed the non-starters, this was not the case with the 3-Pointers. If the data was present it would be helpful if we could see what position the non starters were.
 
 You can also embed plots. See Figure \@ref(fig:pie) for example:
 
 
 
-```{r pie, fig.cap='A fancy pie chart.', tidy=FALSE}
-par(mar = c(0, 1, 0, 1))
-pie(
-  c(280, 60, 20),
-  c('Sky', 'Sunny side of pyramid', 'Shady side of pyramid'),
-  col = c('#0292D8', '#F7EA39', '#C4B632'),
-  init.angle = -50, border = NA
-)
-```
+```{r}
+model <- game_data %>%
+  lm(PTS ~ FGA, data = .)
 
-
-```
-
-```{r echo=FALSE}
-library(ggplot2)
-ggplot(Orange, aes(x = age, 
-                   y = circumference, 
-                   color = Tree)) +
+game_data %>%
+  ggplot(aes(x = FGA, y = PTS)) +
   geom_point() +
-  geom_line() +
-  guides(color = FALSE) +
-  theme_bw()
+  stat_smooth(method = "lm")
+
+broom::tidy(model)
 ```
+
+From the metrics given and the visible pattern, it's clear that the more field goals are attempted, the more points one makes generally speaking. This might seem a bit trivial, but if only certain players understood that it's ok to shoot more. You miss 100% of the shots you don't take after all!
+
+```{r}
+
+list <- lapply(strsplit(game_data$MIN, ":")[[1]], function(x) 
+       scan(text = x, what = numeric(), sep=","))
+
+list %>%
+  unlist() %>%
+  mean()
+```
+Interestingly enough, the average NBA player here plays about 35 mins, which is quite a bit considering that a regulation game is 48 minutes.
+

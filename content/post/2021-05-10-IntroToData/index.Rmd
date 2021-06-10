@@ -56,6 +56,5 @@ game_data <- read.csv(here:::here("Data", "games_details.csv"), stringsAsFactors
 
 ```{r}
 
-head(game_data)
-
+game_data
 ```
