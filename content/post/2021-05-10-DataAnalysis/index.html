@@ -150,7 +150,6 @@ ggplot(starter_grouped, aes(x=START_POSITION, y=avg_ft_pct )) +
   geom_col(fill = &quot;darkorchid&quot;)</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-3.png" width="672" />
 Here we find that while, overall, the Starters still outperformed the non-starters, this was not the case with the 3-Pointers. If the data was present it would be helpful if we could see what position the non starters were.</p>
-<p>You can also embed plots. See Figure <a href="#fig:pie"><strong>??</strong></a> for example:</p>
 <pre class="r"><code>model &lt;- game_data %&gt;%
   lm(PTS ~ FGA, data = .)
 
