@@ -41,6 +41,7 @@ game_data &lt;- game_data %&gt;%
     START_POSITION = as.factor(START_POSITION)
   )
     
+game_data[is.na(game_data)] &lt;- 0
 </code></pre>
 </div>
 <div id="whats-in-a-name" class="section level1">
@@ -78,30 +79,102 @@ as.data.frame(table(names)) %&gt;%
 <div id="starters-vs-non-starters" class="section level2">
 <h2>Starters vs Non-Starters</h2>
 <p>In the game of basketball, while it’s not always the case, the best players usually start the game, hence their title of starters. I’m interested to see just how much of a performance gap there is between these two groups.</p>
-<p>grouped_Seeds &lt;- cereals %&gt;%
-group_by(Seed_Type) %&gt;%
-summarise(meanRating = mean(rating))</p>
-<p>ggplot(grouped_Seeds, aes(x=Seed_Type, y=meanRating)) +
-geom_bar(stat = “identity”) +
-xlab(“Seed Type”) +
-ylab(“Average Rating”) +
-ggtitle(“Mean Rating for Different Seed Types”)
-# Including Plots</p>
-<p>You can also embed plots. See Figure <a href="#fig:pie">1</a> for example:</p>
-<pre class="r"><code>par(mar = c(0, 1, 0, 1))
-pie(
-  c(280, 60, 20),
-  c(&#39;Sky&#39;, &#39;Sunny side of pyramid&#39;, &#39;Shady side of pyramid&#39;),
-  col = c(&#39;#0292D8&#39;, &#39;#F7EA39&#39;, &#39;#C4B632&#39;),
-  init.angle = -50, border = NA
-)</code></pre>
-<div class="figure"><span id="fig:pie"></span>
-<img src="{{< blogdown/postref >}}index_files/figure-html/pie-1.png" alt="A fancy pie chart." width="672" />
-<p class="caption">
-Figure 1: A fancy pie chart.
-</p>
-</div>
-<p>```</p>
+<pre class="r"><code>
+starter_grouped &lt;- game_data %&gt;%
+  group_by(START_POSITION) %&gt;%
+  summarise(avg_points = mean(PTS), 
+            avg_rebounds = mean(REB), 
+            avg_assists = mean(AST))
+
+ggplot(starter_grouped, aes(x=START_POSITION, y=avg_points )) + 
+  geom_bar(stat = &quot;identity&quot;) +
+  xlab(&quot;Starter Status&quot;) + 
+  ylab(&quot;Average Points&quot;) + 
+  ggtitle(&quot;Average Points for Different Starter Positions&quot;) + 
+  theme_bw() +
+  geom_col(fill = &quot;darkorchid&quot;) </code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(starter_grouped, aes(x=START_POSITION, y=avg_rebounds )) + 
+  geom_bar(stat = &quot;identity&quot;) +
+  xlab(&quot;Starter Status&quot;) + 
+  ylab(&quot;Average Rebounds&quot;) + 
+  ggtitle(&quot;Average Rebounds for Different Starter Positions&quot;) + 
+  theme_bw() +
+  geom_col(fill = &quot;darkorchid&quot;)</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(starter_grouped, aes(x=START_POSITION, y=avg_assists )) + 
+  geom_bar(stat = &quot;identity&quot;) +
+  xlab(&quot;Starter Status&quot;) + 
+  ylab(&quot;Average Assists&quot;) + 
+  ggtitle(&quot;Average Assists for Different Starter Positions&quot;) + 
+  theme_bw() +
+  geom_col(fill = &quot;darkorchid&quot;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+From these graphs, it’s clear that Non-Starters did not produce the same volume of points, assists, or rebounds, which are the main metrics in basketball. It also makes sense with today’s game why Guards would be making more points than centers, and centers more rebounds than any other group.</p>
+<p>However, perhaps starters play for longer and can accumulate more of these, so a better metric would be their percentage performances for other metrics, such as normal fieldgoals, field goals, and three pointers.</p>
 </div>
+</div>
+<div id="performance-percentages" class="section level1">
+<h1>Performance Percentages</h1>
+<pre class="r"><code>
+starter_grouped &lt;- game_data %&gt;%
+  group_by(START_POSITION) %&gt;%
+  summarise(avg_fg_pct = mean(FG_PCT), 
+            avg_fg3_pct = mean(FG3_PCT), 
+            avg_ft_pct = mean(FT_PCT))
+
+ggplot(starter_grouped, aes(x=START_POSITION, y=avg_fg_pct)) + 
+  geom_bar(stat = &quot;identity&quot;) +
+  xlab(&quot;Starter Status&quot;) + 
+  ylab(&quot;Average Field Goal Percentage&quot;) + 
+  ggtitle(&quot;Mean Field Goal Percentage for Different Starter Positions&quot;) + 
+  theme_bw() +
+  geom_col(fill = &quot;darkorchid&quot;) </code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>
+ggplot(starter_grouped, aes(x=START_POSITION, y=avg_fg3_pct  )) + 
+  geom_bar(stat = &quot;identity&quot;) +
+  xlab(&quot;Starter Status&quot;) + 
+  ylab(&quot;Mean 3-Pointer Percentage&quot;) + 
+  ggtitle(&quot;Mean 3-Pointer Percentage for Different Starter Positions&quot;) + 
+  theme_bw() +
+  geom_col(fill = &quot;darkorchid&quot;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<pre class="r"><code>
+ggplot(starter_grouped, aes(x=START_POSITION, y=avg_ft_pct )) + 
+  geom_bar(stat = &quot;identity&quot;) +
+  xlab(&quot;Starter Status&quot;) + 
+  ylab(&quot;Mean Free Throw Percentage&quot;) + 
+  ggtitle(&quot;Mean Free Throw Percentage for Different Starter Positions&quot;) + 
+  theme_bw() +
+  geom_col(fill = &quot;darkorchid&quot;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-3.png" width="672" />
+Here we find that while, overall, the Starters still outperformed the non-starters, this was not the case with the 3-Pointers. If the data was present it would be helpful if we could see what position the non starters were.</p>
+<p>You can also embed plots. See Figure <a href="#fig:pie"><strong>??</strong></a> for example:</p>
+<pre class="r"><code>model &lt;- game_data %&gt;%
+  lm(PTS ~ FGA, data = .)
+
+game_data %&gt;%
+  ggplot(aes(x = FGA, y = PTS)) +
+  geom_point() +
+  stat_smooth(method = &quot;lm&quot;)
+## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>
+broom::tidy(model)
+## # A tibble: 2 x 5
+##   term        estimate std.error statistic   p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)   -0.145  0.00662      -22.0 6.82e-107
+## 2 FGA            1.25   0.000746    1670.  0</code></pre>
+<p>From the metrics given and the visible pattern, it’s clear that the more field goals are attempted, the more points one makes generally speaking. This might seem a bit trivial, but if only certain players understood that it’s ok to shoot more. You miss 100% of the shots you don’t take after all!</p>
+<pre class="r"><code>
+list &lt;- lapply(strsplit(game_data$MIN, &quot;:&quot;)[[1]], function(x) 
+       scan(text = x, what = numeric(), sep=&quot;,&quot;))
+
+list %&gt;%
+  unlist() %&gt;%
+  mean()
+## [1] 35</code></pre>
+<p>Interestingly enough, the average NBA player here plays about 35 mins, which is quite a bit considering that a regulation game is 48 minutes.</p>
 </div>
