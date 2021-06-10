@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>331 Final Project</title>
+    <link>/</link>
+    <description>Recent content on 331 Final Project</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About</title>
+      <link>/about/</link>
+      <pubDate>Thu, 05 May 2016 21:48:51 -0700</pubDate>
+      
+      <guid>/about/</guid>
+      <description>Welcome! My name is Ricardo Beltran and this is my final project for STAT 331 taught at Cal Poly San Luis Obispo. In it, I walk you through my analysis of a data set with information on NBA players, games, and metrics. The project also aims to utilize the basics of the blogdown package.
+Note that the theme was forked from @jrutheiser/hugo-lithium-theme and modified by Yihui Xie. Lastly, all analysis was done by Ricardo Beltran</description>
+    </item>
+    
+  </channel>
+</rss>
