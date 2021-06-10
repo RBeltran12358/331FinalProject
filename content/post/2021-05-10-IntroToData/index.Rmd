@@ -1,0 +1,61 @@
+---
+title: "Getting to Know the Data Set"
+author: "Ricardo Beltran"
+date: 2021-06-10T21:13:14-05:10
+categories: ["R"]
+tags: ["R Markdown", "plot", "regression"]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+# R Markdown
+
+The data set we'll be looking at contains data about several NBA, in-game statistics. These include metrics such as:
+- GAME_ID   
+
+- TEAM_ID 
+
+- TEAM_ABBREVIATION  
+
+- TEAM_CITY
+
+- PLAYER_ID   
+
+- PLAYER_NAME
+
+- START_POSITION COMMENT   
+
+- MIN : Minutes played
+
+- FGM : Field Goals Made
+
+- FGA : Field Goals Attempted
+
+- FG_PCT : Field Goal Percentage
+
+- FTM : Free throws made
+
+- FTA : Free throws attempted
+
+- FT_PCT : Free throw percentage
+
+AND OTHERS!
+
+It will allow us to take a better look at players, their stats, and several relationships between the origin, build, team, playstyle of individuals and groups and how well or poorly they performed. 
+
+For more details on this data set and other like it, check out the following link <https://www.kaggle.com/nathanlauga/nba-games?select=games_details.csv>.
+
+The Data Comes Packaged as Such:
+```{r read_data}
+
+game_data <- read.csv(here:::here("Data", "games_details.csv"), stringsAsFactors = FALSE)
+
+```
+
+```{r}
+
+head(game_data)
+
+```

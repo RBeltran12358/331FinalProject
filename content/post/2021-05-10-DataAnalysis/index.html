@@ -1,0 +1,102 @@
+---
+title: "Data Analysis"
+author: "Ricardo Beltran"
+date: 2021-06-10T21:13:14-05:01
+categories: ["R"]
+tags: ["R Markdown", "plot", "regression"]
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+
+<pre class="r"><code>
+game_data &lt;- read.csv(here:::here(&quot;Data&quot;, &quot;games_details.csv&quot;), stringsAsFactors = FALSE)</code></pre>
+<div id="intro" class="section level1">
+<h1>Intro:</h1>
+<p>This page will take a look at and analyze several metrics from our NBA data set.</p>
+</div>
+<div id="preprocessing" class="section level1">
+<h1>Preprocessing</h1>
+<pre class="r"><code>
+game_data &lt;- game_data %&gt;%
+  mutate(
+    TEAM_ID = as.factor(TEAM_ID),
+    TEAM_ABBREVIATION = as.factor(TEAM_ABBREVIATION),
+    TEAM_CITY = as.factor(TEAM_CITY),
+    PLAYER_ID = as.factor(PLAYER_ID),
+    START_POSITION = case_when(
+      (START_POSITION == &quot;C&quot; |
+      START_POSITION == &quot;F&quot; |
+      START_POSITION == &quot;G&quot;) ~ START_POSITION,
+      TRUE ~ &quot;Didn&#39;t Start&quot;
+    ), 
+    STARTER_STATUS = case_when(
+      (START_POSITION == &quot;C&quot; |
+      START_POSITION == &quot;F&quot; |
+      START_POSITION == &quot;G&quot;) ~ &quot;STARTER&quot;,
+      TRUE ~ &quot;NON-STARTER&quot;
+    ),
+    STARTER_STATUS = as.factor(STARTER_STATUS),
+    START_POSITION = as.factor(START_POSITION)
+  )
+    
+</code></pre>
+</div>
+<div id="whats-in-a-name" class="section level1">
+<h1>What’s in a Name?</h1>
+<p>For our early analysis, I’m interested to see if there are any common names among the players in the data set.</p>
+<pre class="r"><code>
+names &lt;- game_data %&gt;%
+  group_by(PLAYER_NAME) %&gt;%
+  summarise(junk = 1) %&gt;%
+  select(PLAYER_NAME) %&gt;%
+  pull() %&gt;% 
+  str_split(&quot; &quot;) %&gt;%
+  unlist()
+
+names &lt;- names[names != &quot;Jr.&quot; &amp; names != &quot;jr.&quot;]
+  
+as.data.frame(table(names)) %&gt;%
+  top_n(10, Freq)
+##       names Freq
+## 1   Anthony   23
+## 2     Brown   29
+## 3     Chris   36
+## 4     James   27
+## 5   Johnson   34
+## 6     Jones   28
+## 7    Jordan   23
+## 8   Michael   23
+## 9     Smith   28
+## 10   Thomas   24
+## 11 Williams   41
+
+# This included some ties for those with a freq of 2</code></pre>
+<p>Here we found the 10 most common names from among the NBA players in the data set.</p>
+</div>
+<div id="including-plots" class="section level1">
+<h1>Including Plots</h1>
+<p>You can also embed plots. See Figure <a href="#fig:pie">1</a> for example:</p>
+<pre class="r"><code>par(mar = c(0, 1, 0, 1))
+pie(
+  c(280, 60, 20),
+  c(&#39;Sky&#39;, &#39;Sunny side of pyramid&#39;, &#39;Shady side of pyramid&#39;),
+  col = c(&#39;#0292D8&#39;, &#39;#F7EA39&#39;, &#39;#C4B632&#39;),
+  init.angle = -50, border = NA
+)</code></pre>
+<div class="figure"><span id="fig:pie"></span>
+<img src="{{< blogdown/postref >}}index_files/figure-html/pie-1.png" alt="A fancy pie chart." width="672" />
+<p class="caption">
+Figure 1: A fancy pie chart.
+</p>
+</div>
+<pre class="r"><code>summary(Orange)
+##  Tree       age         circumference  
+##  3:7   Min.   : 118.0   Min.   : 30.0  
+##  1:7   1st Qu.: 484.0   1st Qu.: 65.5  
+##  5:7   Median :1004.0   Median :115.0  
+##  2:7   Mean   : 922.1   Mean   :115.9  
+##  4:7   3rd Qu.:1372.0   3rd Qu.:161.5  
+##        Max.   :1582.0   Max.   :214.0</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>

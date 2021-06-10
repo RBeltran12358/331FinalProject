@@ -1,0 +1,60 @@
+---
+title: "Getting to Know the Data Set"
+author: "Ricardo Beltran"
+date: 2021-06-10T21:13:14-05:10
+categories: ["R"]
+tags: ["R Markdown", "plot", "regression"]
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="r-markdown" class="section level1">
+<h1>R Markdown</h1>
+<p>The data set we’ll be looking at contains data about several NBA, in-game statistics. These include metrics such as:
+- GAME_ID</p>
+<ul>
+<li><p>TEAM_ID</p></li>
+<li><p>TEAM_ABBREVIATION</p></li>
+<li><p>TEAM_CITY</p></li>
+<li><p>PLAYER_ID</p></li>
+<li><p>PLAYER_NAME</p></li>
+<li><p>START_POSITION COMMENT</p></li>
+<li><p>MIN : Minutes played</p></li>
+<li><p>FGM : Field Goals Made</p></li>
+<li><p>FGA : Field Goals Attempted</p></li>
+<li><p>FG_PCT : Field Goal Percentage</p></li>
+<li><p>FTM : Free throws made</p></li>
+<li><p>FTA : Free throws attempted</p></li>
+<li><p>FT_PCT : Free throw percentage</p></li>
+</ul>
+<p>AND OTHERS!</p>
+<p>It will allow us to take a better look at players, their stats, and several relationships between the origin, build, team, playstyle of individuals and groups and how well or poorly they performed.</p>
+<p>For more details on this data set and other like it, check out the following link <a href="https://www.kaggle.com/nathanlauga/nba-games?select=games_details.csv" class="uri">https://www.kaggle.com/nathanlauga/nba-games?select=games_details.csv</a>.</p>
+<p>The Data Comes Packaged as Such:</p>
+<pre class="r"><code>
+game_data &lt;- read.csv(here:::here(&quot;Data&quot;, &quot;games_details.csv&quot;), stringsAsFactors = FALSE)</code></pre>
+<pre class="r"><code>
+head(game_data)
+##    GAME_ID    TEAM_ID TEAM_ABBREVIATION  TEAM_CITY PLAYER_ID       PLAYER_NAME
+## 1 42000102 1610612764               WAS Washington    203078      Bradley Beal
+## 2 42000102 1610612764               WAS Washington   1629060     Rui Hachimura
+## 3 42000102 1610612764               WAS Washington    203458          Alex Len
+## 4 42000102 1610612764               WAS Washington    203526         Raul Neto
+## 5 42000102 1610612764               WAS Washington    201566 Russell Westbrook
+## 6 42000102 1610612764               WAS Washington    202722     Davis Bertans
+##   START_POSITION COMMENT   MIN FGM FGA FG_PCT FG3M FG3A FG3_PCT FTM FTA FT_PCT
+## 1              F         34:36  14  28  0.500    1    6   0.167   4   6  0.667
+## 2              F         25:50   4   6  0.667    1    1   1.000   2   3  0.667
+## 3              C         12:11   3   5  0.600    0    0   0.000   0   0  0.000
+## 4              G         19:19   2   5  0.400    0    2   0.000   0   0  0.000
+## 5              G         29:07   2  10  0.200    0    3   0.000   6  10  0.600
+## 6                        23:43   0   4  0.000    0    4   0.000   0   0  0.000
+##   OREB DREB REB AST STL BLK TO PF PTS PLUS_MINUS
+## 1    0    4   4   3   1   0  1  0  33        -22
+## 2    2    5   7   1   0   0  3  4  11         -6
+## 3    3    2   5   0   1   0  0  2   6        -11
+## 4    1    2   3   1   0   0  0  2   4        -17
+## 5    2    4   6  11   0   0  4  0  10        -16
+## 6    0    2   2   0   0   0  0  6   0        -11</code></pre>
+</div>
