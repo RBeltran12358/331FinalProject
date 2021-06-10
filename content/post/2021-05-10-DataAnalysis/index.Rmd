@@ -75,14 +75,31 @@ as.data.frame(table(names)) %>%
 
 # This included some ties for those with a freq of 2
 ```
-Here we found the 10 most common names from among the NBA players in the data set. 
+Here we found the 10 most common names from among the NBA players in the data set. It appears that names like Johnson, Chris and Williams were the most popular. 
 
+Fun Fact: There have been multiple ALL-STARS and even HALL OF FAMERS with those names.
+
+
+## Starters vs Non-Starters
+
+In the game of basketball, while it's not always the case, the best players usually start the game, hence their title of starters. I'm interested to see just how much of a performance gap there is between these two groups.
+
+```{r}
+
+```
+
+grouped_Seeds <- cereals %>%
+  group_by(Seed_Type) %>%
+  summarise(meanRating = mean(rating))
+
+ggplot(grouped_Seeds, aes(x=Seed_Type, y=meanRating)) + 
+  geom_bar(stat = "identity") +
+  xlab("Seed Type") + 
+  ylab("Average Rating") + 
+  ggtitle("Mean Rating for Different Seed Types")
 # Including Plots
 
 You can also embed plots. See Figure \@ref(fig:pie) for example:
-
-
-
 
 
 
@@ -96,8 +113,7 @@ pie(
 )
 ```
 
-```{r}
-summary(Orange)
+
 ```
 
 ```{r echo=FALSE}

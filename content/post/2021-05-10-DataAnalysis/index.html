@@ -72,10 +72,20 @@ as.data.frame(table(names)) %&gt;%
 ## 11 Williams   41
 
 # This included some ties for those with a freq of 2</code></pre>
-<p>Here we found the 10 most common names from among the NBA players in the data set.</p>
-</div>
-<div id="including-plots" class="section level1">
-<h1>Including Plots</h1>
+<p>Here we found the 10 most common names from among the NBA players in the data set. It appears that names like Johnson, Chris and Williams were the most popular.</p>
+<p>Fun Fact: There have been multiple ALL-STARS and even HALL OF FAMERS with those names.</p>
+<div id="starters-vs-non-starters" class="section level2">
+<h2>Starters vs Non-Starters</h2>
+<p>In the game of basketball, while it’s not always the case, the best players usually start the game, hence their title of starters. I’m interested to see just how much of a performance gap there is between these two groups.</p>
+<p>grouped_Seeds &lt;- cereals %&gt;%
+group_by(Seed_Type) %&gt;%
+summarise(meanRating = mean(rating))</p>
+<p>ggplot(grouped_Seeds, aes(x=Seed_Type, y=meanRating)) +
+geom_bar(stat = “identity”) +
+xlab(“Seed Type”) +
+ylab(“Average Rating”) +
+ggtitle(“Mean Rating for Different Seed Types”)
+# Including Plots</p>
 <p>You can also embed plots. See Figure <a href="#fig:pie">1</a> for example:</p>
 <pre class="r"><code>par(mar = c(0, 1, 0, 1))
 pie(
@@ -90,13 +100,7 @@ pie(
 Figure 1: A fancy pie chart.
 </p>
 </div>
-<pre class="r"><code>summary(Orange)
-##  Tree       age         circumference  
-##  3:7   Min.   : 118.0   Min.   : 30.0  
-##  1:7   1st Qu.: 484.0   1st Qu.: 65.5  
-##  5:7   Median :1004.0   Median :115.0  
-##  2:7   Mean   : 922.1   Mean   :115.9  
-##  4:7   3rd Qu.:1372.0   3rd Qu.:161.5  
-##        Max.   :1582.0   Max.   :214.0</code></pre>
+<p>```</p>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
 </div>
